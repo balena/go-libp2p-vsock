@@ -68,7 +68,7 @@ func (t *VsockTransport) CanDial(addr ma.Multiaddr) bool {
 	return dialMatcher.Matches(addr)
 }
 
-func (t *VsockTransport) maDial(ctx context.Context, raddr ma.Multiaddr) (manet.Conn, error) {
+func (t *VsockTransport) mavsnetDial(ctx context.Context, raddr ma.Multiaddr) (manet.Conn, error) {
 	// Context is discarded for now in the hope VSOCK connections
 	// complete as fast as possible.
 	return mavsnet.Dial(raddr)
@@ -95,7 +95,7 @@ func (t *VsockTransport) dialWithScope(ctx context.Context, raddr ma.Multiaddr, 
 		log.Debugw("resource manager blocked outgoing connection for peer", "peer", p, "addr", raddr, "error", err)
 		return nil, err
 	}
-	conn, err := t.maDial(ctx, raddr)
+	conn, err := t.mavsnetDial(ctx, raddr)
 	if err != nil {
 		return nil, err
 	}
@@ -111,16 +111,16 @@ func (t *VsockTransport) UseReuseport() bool {
 	return !t.disableReuseport && ReuseportIsAvailable()
 }
 
-func (t *VsockTransport) maListen(laddr ma.Multiaddr) (manet.Listener, error) {
+func (t *VsockTransport) mavsnetListen(laddr ma.Multiaddr) (manet.Listener, error) {
 	if t.UseReuseport() {
 		return t.reuse.Listen(laddr)
 	}
-	return manet.Listen(laddr)
+	return mavsnet.Listen(laddr)
 }
 
 // Listen listens on the given multiaddr.
 func (t *VsockTransport) Listen(laddr ma.Multiaddr) (transport.Listener, error) {
-	list, err := t.maListen(laddr)
+	list, err := t.mavsnetListen(laddr)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (t *VsockTransport) Listen(laddr ma.Multiaddr) (transport.Listener, error) 
 
 // Protocols returns the list of terminal protocols this transport can dial.
 func (t *VsockTransport) Protocols() []int {
-	return []int{mavs.P_VSOCK}
+	return []int{ma.P_TCP}
 }
 
 // Proxy always returns false for the TCP transport.
