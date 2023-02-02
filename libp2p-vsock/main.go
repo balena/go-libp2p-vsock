@@ -121,14 +121,14 @@ func startListener(ctx context.Context, ha host.Host, listenAddr string, insecur
 	}
 
 	prefix, portC := ma.SplitLast(vsockMaddr)
-	port := binary.BigEndian.Uint16(portC.RawValue())
-	nextPort, _ := ma.NewComponent("tcp", strconv.Itoa(int(port+1)))
+	port := binary.BigEndian.Uint32(portC.RawValue())
+	nextPort, _ := ma.NewComponent("xtcp", strconv.Itoa(int(port+1)))
 	nextListenAddr := prefix.Encapsulate(nextPort)
 
 	if insecure {
-		log.Printf("Now run \"./echo -l %s -d %s -insecure\" on a different terminal\n", nextListenAddr, fullAddr)
+		log.Printf("Now run \"./libp2p-vsock -l %s -d %s -insecure\" on a different terminal\n", nextListenAddr, fullAddr)
 	} else {
-		log.Printf("Now run \"./echo -l %s -d %s\" on a different terminal\n", nextListenAddr, fullAddr)
+		log.Printf("Now run \"./libp2p-vsock -l %s -d %s\" on a different terminal\n", nextListenAddr, fullAddr)
 	}
 }
 

@@ -3,7 +3,7 @@ module github.com/balena/go-libp2p-vsock
 go 1.19
 
 require (
-	github.com/balena/go-multiaddr-vsock v0.0.0-20230202150030-5336e8861ecf
+	github.com/balena/go-multiaddr-vsock v0.0.0-20230202202908-ed3f13b99a39
 	github.com/ipfs/go-log/v2 v2.5.1
 	github.com/libp2p/go-libp2p v0.24.2
 	github.com/multiformats/go-multiaddr v0.8.0

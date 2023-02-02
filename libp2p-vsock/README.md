@@ -20,18 +20,18 @@ From the `libp2p-vsock` directory run the following:
 ## Usage
 
 ```
-> ./echo -l /vsock/3/tcp/10000
-2017/03/15 14:11:32 I am /vsock/3/tcp/10000/p2p/QmYo41GybvrXk8y8Xnm1P7pfA4YEXCpfnLyzgRPnNbG35e
-2017/03/15 14:11:32 Now run "./echo -l /vsock/3/tcp/10001 -d /vsock/3/tcp/10000/p2p/QmYo41GybvrXk8y8Xnm1P7pfA4YEXCpfnLyzgRPnNbG35e" on a different terminal
+> ./libp2p-vsock -l /vsock/3/xtcp/10000
+2017/03/15 14:11:32 I am /vsock/3/xtcp/10000/p2p/QmYo41GybvrXk8y8Xnm1P7pfA4YEXCpfnLyzgRPnNbG35e
+2017/03/15 14:11:32 Now run "./libp2p-vsock -l /vsock/3/xtcp/10001 -d /vsock/3/xtcp/10000/p2p/QmYo41GybvrXk8y8Xnm1P7pfA4YEXCpfnLyzgRPnNbG35e" on a different terminal
 2017/03/15 14:11:32 listening for connections
 ```
 
-The listener libp2p host will print its `Multiaddress`, which indicates how it can be reached (vsock+tcp) and its randomly generated ID (`QmYo41Gyb...`)
+The listener libp2p host will print its `Multiaddress`, which indicates how it can be reached (vsock+xtcp) and its randomly generated ID (`QmYo41Gyb...`)
 
 Now, launch another node that talks to the listener:
 
 ```
-> ./echo -l /vsock/3/tcp/10001 -d /vsock/3/tcp/10000/p2p/QmYo41GybvrXk8y8Xnm1P7pfA4YEXCpfnLyzgRPnNbG35e
+> ./libp2p-vsock -l /vsock/3/xtcp/10001 -d /vsock/3/xtcp/10000/p2p/QmYo41GybvrXk8y8Xnm1P7pfA4YEXCpfnLyzgRPnNbG35e
 ```
 
 The new node with send the message `"Hello, world!"` to the listener, which will in turn echo it over the stream and close it. The listener logs the message, and the sender logs the response.
@@ -43,7 +43,7 @@ The `makeBasicHost()` function creates a [go-libp2p-basichost](https://godoc.org
 In order to create the swarm (and a `basichost`), the example needs:
 
 - An [ipfs-procotol ID](https://godoc.org/github.com/libp2p/go-libp2p-peer#ID) like `QmNtX1cvrm2K6mQmMEaMxAuB4rTexhd87vpYVot4sEZzxc`. The example autogenerates a key pair on every run and uses an ID extracted from the public key (the hash of the public key). When using `-insecure`, it leaves the connection unencrypted (otherwise, it uses the key pair to encrypt communications).
-- A VSOCK [Multiaddress](https://godoc.org/github.com/multiformats/go-multiaddr), which indicates how to reach this peer. There can be several of them (using different protocols or locations for example). Example: `/vsock/3/tcp/1234`.
+- A VSOCK [Multiaddress](https://godoc.org/github.com/multiformats/go-multiaddr), which indicates how to reach this peer. There can be several of them (using different protocols or locations for example). Example: `/vsock/3/xtcp/1234`.
 - A [go-libp2p-peerstore](https://godoc.org/github.com/libp2p/go-libp2p-peerstore), which is used as an address book which matches node IDs to the multiaddresses through which they can be contacted. This peerstore gets autopopulated when manually opening a connection (with [`Connect()`](https://godoc.org/github.com/libp2p/go-libp2p/p2p/host/basic#BasicHost.Connect). Alternatively, we can manually [`AddAddr()`](https://godoc.org/github.com/libp2p/go-libp2p-peerstore#AddrManager.AddAddr) as in the example.
 
 A `basichost` can now open streams (bi-directional channel between two peers) using [NewStream](https://godoc.org/github.com/libp2p/go-libp2p/p2p/host/basic#BasicHost.NewStream) and use them to send and receive data tagged with a `Protocol.ID` (a string). The host can also listen for incoming connections for a given
