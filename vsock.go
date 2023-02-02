@@ -48,7 +48,7 @@ func New(upgrader transport.Upgrader, rcmgr network.ResourceManager, opts ...Opt
 	return tr, nil
 }
 
-var dialMatcher = mafmt.And(mafmt.Base(mavs.P_VSOCK), mafmt.Base(ma.P_TCP))
+var dialMatcher = mafmt.And(mafmt.Base(mavs.P_VSOCK), mafmt.Base(mavs.P_XTCP))
 
 // CanDial returns true if this transport believes it can dial the given
 // multiaddr.
