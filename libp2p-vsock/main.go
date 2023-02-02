@@ -120,10 +120,10 @@ func startListener(ctx context.Context, ha host.Host, listenAddr string, insecur
 		panic(err)
 	}
 
-	parts := ma.Split(vsockMaddr)
-	port := binary.BigEndian.Uint32(parts[1].Bytes())
+	prefix, portC := ma.SplitLast(vsockMaddr)
+	port := binary.BigEndian.Uint16(portC.RawValue())
 	nextPort, _ := ma.NewComponent("tcp", strconv.Itoa(int(port+1)))
-	nextListenAddr := ma.Join([]ma.Multiaddr{parts[0], nextPort}...)
+	nextListenAddr := prefix.Encapsulate(nextPort)
 
 	if insecure {
 		log.Printf("Now run \"./echo -l %s -d %s -insecure\" on a different terminal\n", nextListenAddr, fullAddr)
