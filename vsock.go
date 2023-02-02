@@ -109,7 +109,7 @@ func (t *VsockTransport) Listen(laddr ma.Multiaddr) (transport.Listener, error) 
 
 // Protocols returns the list of terminal protocols this transport can dial.
 func (t *VsockTransport) Protocols() []int {
-	return []int{ma.P_XTCP}
+	return []int{mavs.P_XTCP}
 }
 
 // Proxy always returns false for the VSOCK transport.
