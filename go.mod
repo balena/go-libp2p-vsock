@@ -3,10 +3,9 @@ module github.com/balena/go-libp2p-vsock
 go 1.19
 
 require (
-	github.com/balena/go-multiaddr-vsock v0.0.0-20230202011441-4b548e795b22
+	github.com/balena/go-multiaddr-vsock v0.0.0-20230202150030-5336e8861ecf
 	github.com/ipfs/go-log/v2 v2.5.1
 	github.com/libp2p/go-libp2p v0.24.2
-	github.com/libp2p/go-reuseport v0.2.0
 	github.com/multiformats/go-multiaddr v0.8.0
 	github.com/multiformats/go-multiaddr-fmt v0.1.0
 )
@@ -47,6 +46,7 @@ require (
 	github.com/libp2p/go-nat v0.1.0 // indirect
 	github.com/libp2p/go-netroute v0.2.1 // indirect
 	github.com/libp2p/go-openssl v0.1.0 // indirect
+	github.com/libp2p/go-reuseport v0.2.0 // indirect
 	github.com/libp2p/go-yamux/v4 v4.0.0 // indirect
 	github.com/lucas-clemente/quic-go v0.31.1 // indirect
 	github.com/marten-seemann/qtls-go1-18 v0.1.3 // indirect

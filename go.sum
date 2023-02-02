@@ -46,8 +46,8 @@ github.com/alecthomas/units v0.0.0-20151022065526-2efee857e7cf/go.mod h1:ybxpYRF
 github.com/alecthomas/units v0.0.0-20190717042225-c3de453c63f4/go.mod h1:ybxpYRFXyAe+OPACYpWeL0wqObRcbAqCMya13uyzqw0=
 github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d/go.mod h1:rBZYJk541a8SKzHPHnH3zbiI+7dagKZ0cgpgrD7Fyho=
 github.com/anmitsu/go-shlex v0.0.0-20161002113705-648efa622239/go.mod h1:2FmKhYUyUczH0OGQWaF5ceTx0UBShxjsH6f8oGKYe2c=
-github.com/balena/go-multiaddr-vsock v0.0.0-20230202011441-4b548e795b22 h1:BRiikhSPScaoBc1YlknACnwbtX9kM/TFNawn2vbWFbQ=
-github.com/balena/go-multiaddr-vsock v0.0.0-20230202011441-4b548e795b22/go.mod h1:YHiJBnUNpWKNRnSWYdu3y/0/UWXbntwsgC+mO2ajpug=
+github.com/balena/go-multiaddr-vsock v0.0.0-20230202150030-5336e8861ecf h1:xBZt3WPDD8dSceI4D5hjcJF0dNh+wxlqjS9GYK4O40o=
+github.com/balena/go-multiaddr-vsock v0.0.0-20230202150030-5336e8861ecf/go.mod h1:YHiJBnUNpWKNRnSWYdu3y/0/UWXbntwsgC+mO2ajpug=
 github.com/balena/go-vsock v0.0.0-20230202011352-197b80630bd3 h1:eIo/gQGYAS1sNirX3GKUMqPmF5MyTOKb2CjNYioaF4M=
 github.com/balena/go-vsock v0.0.0-20230202011352-197b80630bd3/go.mod h1:bxNluyPYXsN/TUPGpDaHvtKIbWwd4HxG8YRj8zyK/ck=
 github.com/benbjohnson/clock v1.1.0/go.mod h1:J11/hYXuz8f4ySSvYwY0FKfm+ezbsZBKZxNJlLklBHA=
