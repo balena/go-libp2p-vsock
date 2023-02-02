@@ -12,14 +12,15 @@ import (
 	mrand "math/rand"
 	"strconv"
 
-	libp2pvsock "github.com/balena/go-libp2p-vsock"
 	"github.com/libp2p/go-libp2p"
 	"github.com/libp2p/go-libp2p/core/crypto"
 	"github.com/libp2p/go-libp2p/core/host"
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/core/peerstore"
+	"github.com/libp2p/go-libp2p/core/transport"
 
+	libp2pvsock "github.com/balena/go-libp2p-vsock"
 	golog "github.com/ipfs/go-log/v2"
 	ma "github.com/multiformats/go-multiaddr"
 )
@@ -74,7 +75,9 @@ func makeBasicHost(listenAddr string, insecure bool, randseed int64) (host.Host,
 	}
 
 	opts := []libp2p.Option{
-		libp2p.Transport(libp2pvsock.New),
+		libp2p.Transport(func(upgrader transport.Upgrader, rcmgr network.ResourceManager) (*libp2pvsock.VsockTransport, error) {
+			return libp2pvsock.New(upgrader, rcmgr, libp2pvsock.DisableReuseport())
+		}),
 		libp2p.ListenAddrStrings(listenAddr),
 		libp2p.Identity(priv),
 		libp2p.DisableRelay(),

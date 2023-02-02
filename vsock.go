@@ -6,7 +6,6 @@ import (
 	"github.com/libp2p/go-libp2p/core/network"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/libp2p/go-libp2p/core/transport"
-	"github.com/libp2p/go-libp2p/p2p/net/reuseport"
 
 	mavs "github.com/balena/go-multiaddr-vsock"
 	mavsnet "github.com/balena/go-multiaddr-vsock/net"
@@ -20,24 +19,13 @@ var log = logging.Logger("vsock-tpt")
 
 type Option func(*VsockTransport) error
 
-func DisableReuseport() Option {
-	return func(tr *VsockTransport) error {
-		tr.disableReuseport = true
-		return nil
-	}
-}
-
 // VsockTransport is the VSOCK transport.
 type VsockTransport struct {
 	// Connection upgrader for upgrading insecure stream connections to
 	// secure multiplex connections.
 	upgrader transport.Upgrader
 
-	disableReuseport bool // Explicitly disable reuseport.
-
 	rcmgr network.ResourceManager
-
-	reuse reuseport.Transport
 }
 
 var _ transport.Transport = &VsockTransport{}
@@ -71,7 +59,7 @@ func (t *VsockTransport) CanDial(addr ma.Multiaddr) bool {
 func (t *VsockTransport) mavsnetDial(ctx context.Context, raddr ma.Multiaddr) (manet.Conn, error) {
 	// Context is discarded for now in the hope VSOCK connections
 	// complete as fast as possible.
-	return mavsnet.Dial(raddr)
+	return mavsnet.DialContext(ctx, raddr)
 }
 
 // Dial dials the peer at the remote address.
@@ -106,15 +94,7 @@ func (t *VsockTransport) dialWithScope(ctx context.Context, raddr ma.Multiaddr, 
 	return t.upgrader.Upgrade(ctx, t, conn, direction, p, connScope)
 }
 
-// UseReuseport returns true if reuseport is enabled and available.
-func (t *VsockTransport) UseReuseport() bool {
-	return !t.disableReuseport && ReuseportIsAvailable()
-}
-
 func (t *VsockTransport) mavsnetListen(laddr ma.Multiaddr) (manet.Listener, error) {
-	if t.UseReuseport() {
-		return t.reuse.Listen(laddr)
-	}
 	return mavsnet.Listen(laddr)
 }
 
